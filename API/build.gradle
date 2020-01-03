@@ -1,0 +1,39 @@
+buildscript {
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:2.0.0.RELEASE"
+        classpath "io.spring.gradle:dependency-management-plugin:1.0.4.RELEASE"
+    }
+    repositories {
+        mavenCentral()
+    }
+}
+
+apply plugin: 'application'
+apply plugin: 'org.springframework.boot'
+apply plugin: "io.spring.dependency-management"
+
+
+dependencies {
+    compile(project(':core'), project(':DAO'))
+    implementation 'org.springframework.boot:spring-boot-starter'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-aop'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-redis'
+    compile group: 'com.baomidou', name: 'mybatis-plus-boot-starter', version: '3.1.0'
+    compile group: 'com.github.pagehelper', name: 'pagehelper-spring-boot-starter', version: '1.2.12' //分页
+    compile group: 'org.hibernate', name: 'hibernate-ehcache', version: '5.2.14.Final'
+    testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: rootProject.ext.springBootVersion
+
+//    testCompile group: 'org.springframework.restdocs', name: 'spring-restdocs-mockmvc', version: rootProject.ext.springBootVersion
+}
+
+def profiles = project.hasProperty('prod') ? 'prod' : (project.hasProperty('devel') ? 'devel' : 'test')
+
+bootRun {
+    args = ["--spring.profiles.active=" + profiles]
+}
+
+mainClassName = 'com.ws.api.ApiApplication'
+applicationDefaultJvmArgs = ["-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005"]
+

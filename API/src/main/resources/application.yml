@@ -1,0 +1,31 @@
+server:
+  port: 8088
+  compression:
+    enabled: true
+    mime-types: application/json
+  connection-timeout: 50
+
+spring:
+  datasource: #rw
+    url: jdbc:mysql://127.0.0.1/ws?useSSL=false
+    username: root
+    password: 123456
+    dbcp2:
+      initial-size: 50
+      max-total: 500
+      minIdle: 20
+      maxIdle: 50
+      connection-init-sqls: "set names 'utf8mb4'"
+
+
+mybatis-plus:
+  mapper-locations: 'classpath:mapper/*.xml'
+  type-aliases-package: 'com.ws.dao.entity'
+
+logging:
+  level:
+    root: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+
